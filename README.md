@@ -15,7 +15,19 @@ Designed in **KiCad 7** as a native, self-contained project (local symbol, footp
 | ERC | 0 errors, 0 warnings (1 reviewed exclusion, see below) |
 | DRC | 0 violations, 0 unconnected, 0 footprint errors |
 
-![3D view](images/airnode-3d-angled.png)
+![AirNode S3 in the KiCad 3D viewer](images/airnode-3d-angled.png)
+
+| Board render (top / bottom) | KiCad PCB editor |
+|---|---|
+| <img src="images/airnode-pcb-top-bottom.png" width="420" alt="Top and bottom render"> | <img src="images/airnode-kicad-pcb-editor.png" width="420" alt="KiCad PCB editor"> |
+
+---
+
+## Schematic
+
+Single A3 sheet, grouped into functional blocks (USB-C input, LDO, MCU, reset/boot, LEDs, sensor/I2C, debug/GPIO). Full PDF: [`docs/airnode-schematic.pdf`](docs/airnode-schematic.pdf).
+
+![Schematic](images/airnode-schematic.png)
 
 ---
 
@@ -55,6 +67,10 @@ Designed in **KiCad 7** as a native, self-contained project (local symbol, footp
   - signals and USB: 0.2 mm (USB at 0.2 mm to fit the 0.5 mm-pitch connector pads)
 - **Pad connections.** SMD pads connect to the pours solidly (better for reflow); through-hole pads use thermal reliefs (better for hand soldering).
 
+<img src="images/airnode-pcb-top.png" width="380" alt="Top side: antenna keep-out band, ground pour and stitching vias"> <img src="images/airnode-pcb-bottom.png" width="380" alt="Bottom side: near-solid ground plane with pin legends">
+
+*Top: the antenna keep-out band runs across the top edge, with ground pour and stitching vias everywhere else. Bottom: a near-solid ground plane under the USB and signal routing, plus header pin legends.*
+
 ### 6. Manufacturability (DFM)
 - **ESP32 thermal vias opened from 0.2 to 0.3 mm.** Espressif's footprint uses 0.2 mm vias under the module's ground pad. The project's local copy uses 0.3 mm, JLCPCB's standard 2-layer minimum, so the board needs no advanced-process surcharge.
 - **USB-C peg clearance.** In the GCT USB4105 land pattern, the connector's alignment-peg holes sit 0.19 mm from its outer ground pads. That is the manufacturer's geometry, so a scoped DRC rule (`airnode.kicad_dru`) relaxes hole clearance **for J1 only** rather than loosening the board-wide rule.
@@ -73,6 +89,10 @@ Designed in **KiCad 7** as a native, self-contained project (local symbol, footp
   - One warning reviewed and excluded: *"Bidirectional pin connected to power output"* on the BME280's SDO. SDO is deliberately strapped to GND to select address 0x76, and the GND net carries a PWR_FLAG, so this is a false positive by design.
 - **DRC:** KiCad 7 DRC with all track errors reported. 0 violations, 0 unconnected pads, 0 footprint/library mismatches.
 - **Netlist audit:** the exported netlist was compared pin by pin against the design intent (23 nets) and matches exactly.
+
+<img src="images/airnode-erc-result.png" width="520" alt="KiCad ERC: 0 errors, 0 warnings, 1 exclusion">
+
+Reports: [`docs/airnode-erc.rpt`](docs/airnode-erc.rpt) · [`docs/airnode-drc.rpt`](docs/airnode-drc.rpt)
 
 ---
 
