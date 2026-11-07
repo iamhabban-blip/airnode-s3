@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "airnode")(type "KiCad")(uri "${KIPRJMOD}/airnode.kicad_sym")(options "")(descr "AirNode S3 project symbols"))
+)
